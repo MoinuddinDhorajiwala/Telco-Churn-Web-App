@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Telco Customer Churn Prediction</title>
+
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+
+    <header class="project-header">
+
+        <div class="header-content">
+
+            <div class="project-label">
+                BIG DATA ANALYTICS MINI PROJECT
+            </div>
+
+            <h1>Telco Customer Churn Prediction</h1>
+
+            <p class="project-description">
+                A machine learning based web application that predicts whether
+                a telecom customer is likely to churn based on customer,
+                service, contract and billing information.
+            </p>
+
+            <div class="team-card">
+
+                <h3>Project Team</h3>
+
+                <div class="team-members">
+
+                    <div class="member">
+                        <strong>Moinuddin Zaid Dhorajiwala</strong>
+                        <span>231238</span>
+                    </div>
+
+                    <div class="member">
+                        <strong>Mohammed Aadil Kumshi</strong>
+                        <span>231232</span>
+                    </div>
+
+                    <div class="member">
+                        <strong>Rohit Madhukar More</strong>
+                        <span>231239</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+        <section class="model-info">
+
+            <div class="info-card">
+                <span>Model</span>
+                <strong>Balanced Random Forest</strong>
+            </div>
+
+            <div class="info-card">
+                <span>Prediction</span>
+                <strong>Customer Churn</strong>
+            </div>
+
+            <div class="info-card">
+                <span>ROC-AUC</span>
+                <strong>~ 0.84</strong>
+            </div>
+
+            <div class="info-card">
+                <span>Churn Recall</span>
+                <strong>~ 0.81</strong>
+            </div>
+
+        </section>
+
+
+        <form id="predictionForm">
+
+
+            <!-- Customer Information -->
+
+            <section class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">01</div>
+
+                    <div>
+                        <h2>Customer Information</h2>
+                        <p>Basic information about the customer.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="gender">
+                            Gender
+                        </label>
+
+                        <select id="gender" name="gender" required>
+
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="SeniorCitizen">
+                            Senior Citizen
+                        </label>
+
+                        <select id="SeniorCitizen" name="SeniorCitizen" required>
+
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="Partner">
+                            Partner
+                        </label>
+
+                        <select id="Partner" name="Partner" required>
+
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="Dependents">
+                            Dependents
+                        </label>
+
+                        <select id="Dependents" name="Dependents" required>
+
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="tenure">
+                            Tenure (Months)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="tenure"
+                            name="tenure"
+                            min="0"
+                            placeholder="e.g. 24"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Phone Services -->
+
+            <section class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">02</div>
+
+                    <div>
+                        <h2>Phone Services</h2>
+                        <p>Details about the customer's phone services.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="PhoneService">
+                            Phone Service
+                        </label>
+
+                        <select id="PhoneService" name="PhoneService" required>
+
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="MultipleLines">
+                            Multiple Lines
+                        </label>
+
+                        <select id="MultipleLines" name="MultipleLines" required>
+
+                            <option value="No">No</option>
+                            <option value="No phone service">
+                                No phone service
+                            </option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Internet Services -->
+
+            <section class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">03</div>
+
+                    <div>
+                        <h2>Internet & Additional Services</h2>
+                        <p>Select the services currently used by the customer.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="InternetService">
+                            Internet Service
+                        </label>
+
+                        <select
+                            id="InternetService"
+                            name="InternetService"
+                            required
+                        >
+
+                            <option value="DSL">DSL</option>
+                            <option value="Fiber optic">Fiber optic</option>
+                            <option value="No">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="OnlineSecurity">
+                            Online Security
+                        </label>
+
+                        <select
+                            id="OnlineSecurity"
+                            name="OnlineSecurity"
+                            required
+                        >
+
+                            <option value="No">No</option>
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="OnlineBackup">
+                            Online Backup
+                        </label>
+
+                        <select
+                            id="OnlineBackup"
+                            name="OnlineBackup"
+                            required
+                        >
+
+                            <option value="No">No</option>
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="DeviceProtection">
+                            Device Protection
+                        </label>
+
+                        <select
+                            id="DeviceProtection"
+                            name="DeviceProtection"
+                            required
+                        >
+
+                            <option value="No">No</option>
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="TechSupport">
+                            Tech Support
+                        </label>
+
+                        <select
+                            id="TechSupport"
+                            name="TechSupport"
+                            required
+                        >
+
+                            <option value="No">No</option>
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="StreamingTV">
+                            Streaming TV
+                        </label>
+
+                        <select
+                            id="StreamingTV"
+                            name="StreamingTV"
+                            required
+                        >
+
+                            <option value="No">No</option>
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="StreamingMovies">
+                            Streaming Movies
+                        </label>
+
+                        <select
+                            id="StreamingMovies"
+                            name="StreamingMovies"
+                            required
+                        >
+
+                            <option value="No">No</option>
+                            <option value="No internet service">
+                                No internet service
+                            </option>
+                            <option value="Yes">Yes</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Contract & Billing -->
+
+            <section class="form-section">
+
+                <div class="section-heading">
+
+                    <div class="section-number">04</div>
+
+                    <div>
+                        <h2>Contract & Billing</h2>
+                        <p>Contract and payment information.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="Contract">
+                            Contract
+                        </label>
+
+                        <select id="Contract" name="Contract" required>
+
+                            <option value="Month-to-month">
+                                Month-to-month
+                            </option>
+
+                            <option value="One year">
+                                One year
+                            </option>
+
+                            <option value="Two year">
+                                Two year
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="PaperlessBilling">
+                            Paperless Billing
+                        </label>
+
+                        <select
+                            id="PaperlessBilling"
+                            name="PaperlessBilling"
+                            required
+                        >
+
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="PaymentMethod">
+                            Payment Method
+                        </label>
+
+                        <select
+                            id="PaymentMethod"
+                            name="PaymentMethod"
+                            required
+                        >
+
+                            <option value="Bank transfer (automatic)">
+                                Bank transfer (automatic)
+                            </option>
+
+                            <option value="Credit card (automatic)">
+                                Credit card (automatic)
+                            </option>
+
+                            <option value="Electronic check">
+                                Electronic check
+                            </option>
+
+                            <option value="Mailed check">
+                                Mailed check
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="MonthlyCharges">
+                            Monthly Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            id="MonthlyCharges"
+                            name="MonthlyCharges"
+                            step="0.01"
+                            min="0"
+                            placeholder="e.g. 70.70"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="TotalCharges">
+                            Total Charges
+                        </label>
+
+                        <input
+                            type="number"
+                            id="TotalCharges"
+                            name="TotalCharges"
+                            step="0.01"
+                            min="0"
+                            placeholder="e.g. 151.65"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="button-container">
+
+                    <button type="submit" class="predict-button">
+                        Predict Customer Churn
+                    </button>
+
+                </div>
+
+            </section>
+
+        </form>
+
+
+        <!-- Result -->
+
+        <section id="result" class="result-section hidden">
+
+            <div class="result-header">
+
+                <span class="result-label">
+                    Prediction Result
+                </span>
+
+                <h2 id="predictionText">
+                    —
+                </h2>
+
+            </div>
+
+
+            <div class="result-details">
+
+                <div class="result-item">
+
+                    <span>Churn Probability</span>
+
+                    <strong id="probabilityText">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="result-item">
+
+                    <span>Risk Level</span>
+
+                    <strong id="riskText">
+                        —
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div id="error" class="error-message hidden"></div>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            Big Data Analytics Mini Project
+        </p>
+
+        <p>
+            Telco Customer Churn Prediction
+        </p>
+
+    </footer>
+
+
+    <script src="static/js/script.js"></script>
+
+</body>
+</html>
