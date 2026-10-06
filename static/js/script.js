@@ -42,7 +42,7 @@ form.addEventListener("submit", async function (event) {
     try {
 
         // Send request to Flask API
-        const response = await fetch("/predict", {
+        const response = await fetch("https://telco-churn-api-adb2.onrender.com/predict", {
 
             method: "POST",
 
